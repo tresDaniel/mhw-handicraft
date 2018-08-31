@@ -1,8 +1,11 @@
-from flask import Blueprint, request, url_for, session, jsonify
+import json
+
+from flask import Blueprint, request, url_for, session
 from werkzeug.utils import redirect
 
 # from common.utils import Utils
 from models.weapon_type import WeaponType
+from models.damage_type import DamageType
 
 handicraft_blueprint = Blueprint('handicraft', __name__)
 
@@ -45,13 +48,13 @@ handicraft_blueprint = Blueprint('handicraft', __name__)
 @handicraft_blueprint.route('/weapon_type/<name>', methods=['GET'])
 def get_weapon_type(name):
         weapon_type = WeaponType.find_by_name(name)
-        return jsonify(weapon_type.json())
+        return json.dumps(weapon_type.json())
 
 
 @handicraft_blueprint.route('/weapon_type', methods=['GET'])
-def get_all_weapon_type():
+def get_all_weapon_types():
         weapon_types = WeaponType.find_all()
-        return jsonify(weapon_types.json())
+        return json.dumps(weapon_types)
 
 
 @handicraft_blueprint.route('/weapon_type', methods=['POST'])
@@ -64,3 +67,26 @@ def set_weapon_type():
         WeaponType.register(weapon_type)
 
         return weapon_type.name
+
+
+@handicraft_blueprint.route('/damage_type/<name>', methods=['GET'])
+def get_damage_type(name):
+        damage_type = DamageType.find_by_name(name)
+        return json.dumps(damage_type.json())
+
+
+@handicraft_blueprint.route('/weapon_type', methods=['GET'])
+def get_all_damage_types():
+        damage_types = DamageType.find_all()
+        return json.dumps(damage_types)
+
+
+@handicraft_blueprint.route('/damage_type', methods=['POST'])
+def set_damage_type():
+        damage_type_name = request.form['damage_type_name']
+        damage_type_id = request.form['damage_type_id']
+
+        damage_type = DamageType(damage_type_name, damage_type_id)
+        DamageType.register(damage_type)
+
+        return json.dumps(damage_type.json())

@@ -31,9 +31,6 @@ class WeaponType(object):
 
     @staticmethod
     def find_all():
-        weapon_types = Database.find(collection='weapon_types', query={})
+        weapon_types = list(Database.find(collection='weapon_types', query={}))
 
-        weapon_type = next(weapon_types)
-
-        if weapon_type:
-            return weapon_type
+        return weapon_types
