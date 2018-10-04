@@ -49,18 +49,18 @@ class Weapon(object):
 
     @classmethod
     def find_by_name(cls, name):
-        weapon = Database.find_one(collection='weapon', query={'name': name})
+        weapon = Database.find_one(collection='weapons', query={'name': name})
         if weapon:
             return cls(**weapon)
 
     @classmethod
     def find_by_type(cls, weapon_type):
-        weapon = Database.find_one(collection='weapon', query={'type': weapon_type})
+        weapon = Database.find_one(collection='weapons', query={'type': weapon_type})
         if weapon:
             return cls(**weapon)
 
     @staticmethod
     def find_all():
-        weapon = list(Database.find(collection='weapon', query={}))
+        weapon = list(Database.find(collection='weapons', query={}))
 
         return weapon

@@ -6,6 +6,7 @@ from werkzeug.utils import redirect
 # from common.utils import Utils
 from models.weapon_type import WeaponType
 from models.damage_type import DamageType
+from models.weapon import Weapon
 
 handicraft_blueprint = Blueprint('handicraft', __name__)
 
@@ -75,7 +76,7 @@ def get_damage_type(name):
         return json.dumps(damage_type.json())
 
 
-@handicraft_blueprint.route('/weapon_type', methods=['GET'])
+@handicraft_blueprint.route('/damage_type', methods=['GET'])
 def get_all_damage_types():
         damage_types = DamageType.find_all()
         return json.dumps(damage_types)
@@ -90,3 +91,42 @@ def set_damage_type():
         DamageType.register(damage_type)
 
         return json.dumps(damage_type.json())
+
+
+@handicraft_blueprint.route('/weapon/<name>', methods=['GET'])
+def get_weapon(name):
+        weapon = Weapon.find_by_name(name)
+        return json.dumps(weapon.json())
+
+
+@handicraft_blueprint.route('/weapon', methods=['GET'])
+def get_all_weapons():
+        weapons = Weapon.find_all()
+        return json.dumps(weapons)
+
+
+@handicraft_blueprint.route('/weapon', methods=['POST'])
+def set_weapon():
+
+        weapon_type = request.form['weapon_type']
+        weapon_name = request.form['weapon_name']
+        weapon_rarity = request.form['weapon_rarity']
+        weapon_raw_damage = request.form['weapon_raw_damage']
+        weapon_true_damage = request.form['weapon_true_damage']
+        weapon_elemental_damage = request.form['weapon_elemental_damage']
+        weapon_status_damage = request.form['weapon_status_damage']
+        weapon_damage_type = request.form['weapon_damage_type']
+        weapon_sharpness = request.form['weapon_sharpness']
+        weapon_awakened = request.form['weapon_awakened']
+        weapon_affinity = request.form['weapon_affinity']
+        weapon_defense = request.form['weapon_defense']
+        weapon_slot = request.form['weapon_slot']
+        weapon_weapon_id = request.form['weapon_weapon_id']
+
+        weapon = Weapon(weapon_type, weapon_name, weapon_rarity, weapon_raw_damage, weapon_true_damage,
+                        weapon_elemental_damage, weapon_status_damage, weapon_damage_type, weapon_sharpness,
+                        weapon_awakened, weapon_affinity, weapon_defense, weapon_slot, weapon_weapon_id)
+
+        Weapon.register(weapon)
+
+        return weapon.name
